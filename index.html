@@ -1,83 +1,115 @@
-"use client"
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrdMax</title>
 
-import { motion } from "framer-motion"
-
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-
-      {/* ЖИВОЙ ГРАДИЕНТ ФОН */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-black to-red-900/20 animate-pulse blur-3xl"></div>
-
-      <div className="relative z-10 p-6">
-
-        {/* HEADER */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-400 to-red-500 bg-clip-text text-transparent">
-            TrdMax
-          </h1>
-          <p className="text-sm opacity-60 mt-2">Premium Trading Signals</p>
-        </div>
-
-        {/* SIGNAL CARDS */}
-        <div className="space-y-5">
-
-          <SignalCard
-            symbol="BTCUSDT"
-            type="BUY"
-            entry="64,250"
-            stop="63,900"
-            tp1="64,900"
-            tp2="65,600"
-            confidence="74%"
-          />
-
-          <SignalCard
-            symbol="SOLUSDT"
-            type="SELL"
-            entry="121.30"
-            stop="123.10"
-            tp1="118.90"
-            tp2="116.20"
-            confidence="69%"
-          />
-
-        </div>
-
-        {/* BUTTON */}
-        <button className="w-full mt-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-green-400 to-red-500 hover:scale-95 transition-all shadow-lg shadow-green-500/30">
-          Обновить сигналы
-        </button>
-
-      </div>
-    </div>
-  )
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#000;
+overflow:hidden;
+font-family:system-ui;
+color:#fff;
 }
 
-function SignalCard({ symbol, type, entry, stop, tp1, tp2, confidence }: any) {
-  return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 shadow-xl"
-    >
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold">{symbol}</h2>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-          type === "BUY"
-            ? "bg-green-400 text-black"
-            : "bg-red-500 text-white"
-        }`}>
-          {type}
-        </span>
-      </div>
-
-      <div className="mt-4 text-sm opacity-80 leading-6">
-        Entry: {entry} <br/>
-        Stop: {stop} <br/>
-        TP1: {tp1} <br/>
-        TP2: {tp2} <br/>
-        Confidence: {confidence}
-      </div>
-    </motion.div>
-  )
+/* ЖИВОЙ ФОН */
+body::before{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+background:radial-gradient(circle,#00ff8822,#000 60%);
+animation:spin 15s linear infinite;
 }
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+/* ЛЕТАЮЩИЕ ЧАСТИЦЫ */
+.p{
+position:absolute;
+width:4px;
+height:4px;
+background:#00ff88;
+border-radius:50%;
+box-shadow:0 0 15px #00ff88;
+animation:fly 8s linear infinite;
+}
+@keyframes fly{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-10vh)}
+}
+
+/* БЛОК */
+.box{
+position:relative;
+z-index:2;
+text-align:center;
+backdrop-filter:blur(25px);
+padding:40px;
+border-radius:30px;
+background:rgba(255,255,255,0.03);
+border:1px solid rgba(0,255,136,0.2);
+box-shadow:0 0 60px #00ff8840;
+}
+
+/* ЛОГО */
+h1{
+margin:0 0 10px;
+font-size:40px;
+background:linear-gradient(90deg,#00ff88,#ff0044);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* КНОПКИ */
+button{
+display:block;
+width:220px;
+margin:15px auto;
+padding:14px;
+border-radius:20px;
+border:1px solid #00ff8855;
+background:rgba(255,255,255,0.05);
+color:#fff;
+font-weight:600;
+backdrop-filter:blur(20px);
+cursor:pointer;
+transition:.3s;
+}
+button:hover{
+box-shadow:0 0 25px #ff0044;
+transform:translateY(-4px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h1>TrdMax</h1>
+<p style="opacity:.6">Premium System</p>
+
+<button>Начать</button>
+<button>О проекте</button>
+<button>Поддержка</button>
+</div>
+
+<script>
+for(let i=0;i<25;i++){
+let d=document.createElement("div");
+d.className="p";
+d.style.left=Math.random()*100+"vw";
+d.style.animationDuration=5+Math.random()*5+"s";
+document.body.appendChild(d);
+}
+</script>
+
+</body>
+</html>
