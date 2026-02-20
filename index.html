@@ -1,128 +1,323 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrdMax</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <title>TrdMax</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+  <!-- Telegram Mini Apps -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-body{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:
-radial-gradient(1200px 800px at 50% -10%, #0d2f1f, #000 70%),
-radial-gradient(800px 600px at 80% 120%, #1a0b14, transparent 70%);
-color:#fff;
-overflow:hidden;
-}
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+    :root{
+      --bg: #000;
+      --text: #fff;
 
-/* ШУМ ДЛЯ ДОРОГОГО ЭФФЕКТА */
-body::after{
-content:"";
-position:absolute;
-inset:0;
-background:url('https://grainy-gradients.vercel.app/noise.svg');
-opacity:.05;
-pointer-events:none;
-}
+      /* Safe areas (Telegram vars exist on mobile clients; fallback to 0) */
+      --sa-top: var(--tg-safe-area-inset-top, 0px);
+      --sa-right: var(--tg-safe-area-inset-right, 0px);
+      --sa-bottom: var(--tg-safe-area-inset-bottom, 0px);
+      --sa-left: var(--tg-safe-area-inset-left, 0px);
 
-/* ГЛАВНЫЙ БЛОК */
-.container{
-position:relative;
-width:340px;
-padding:50px 40px;
-border-radius:28px;
-background:rgba(20,20,20,.6);
-backdrop-filter:blur(30px);
-border:1px solid rgba(255,255,255,.06);
-box-shadow:
-0 40px 80px rgba(0,0,0,.6),
-0 0 120px rgba(0,255,136,.15);
-animation:fade 1s ease forwards;
-}
+      --csa-top: var(--tg-content-safe-area-inset-top, 0px);
+      --csa-right: var(--tg-content-safe-area-inset-right, 0px);
+      --csa-bottom: var(--tg-content-safe-area-inset-bottom, 0px);
+      --csa-left: var(--tg-content-safe-area-inset-left, 0px);
+    }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
-}
+    html,body{height:100%}
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
 
-/* ЛОГО */
-.logo{
-font-size:36px;
-font-weight:800;
-letter-spacing:1px;
-background:linear-gradient(90deg,#3cff9c,#ff3b5c);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-text-align:center;
-}
+      padding:
+        calc(var(--sa-top) + var(--csa-top))
+        calc(var(--sa-right) + var(--csa-right))
+        calc(var(--sa-bottom) + var(--csa-bottom))
+        calc(var(--sa-left) + var(--csa-left));
 
-.subtitle{
-text-align:center;
-opacity:.5;
-margin:10px 0 35px;
-font-size:14px;
-}
+      color:var(--text);
+      background: var(--bg);
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* КНОПКИ */
-.btn{
-width:100%;
-padding:16px;
-margin-bottom:15px;
-border-radius:18px;
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.08);
-color:#fff;
-font-weight:600;
-cursor:pointer;
-transition:.3s;
-position:relative;
-overflow:hidden;
-}
+    /* PREMIUM BACKDROP LAYERS */
+    .bg{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
 
-.btn::before{
-content:"";
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
-transition:.6s;
-}
+    /* subtle animated gradients */
+    .bg::before{
+      content:"";
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(1200px 800px at 50% -10%, rgba(13,47,31,.95), rgba(0,0,0,1) 70%),
+        radial-gradient(900px 650px at 90% 120%, rgba(26,11,20,.95), transparent 70%),
+        radial-gradient(700px 500px at 10% 110%, rgba(20,80,255,.12), transparent 60%);
+      background-size: 200% 200%;
+      animation: bgShift 22s ease-in-out infinite;
+      filter: saturate(120%);
+      transform: translateZ(0);
+    }
 
-.btn:hover::before{
-left:100%;
-}
+    @keyframes bgShift{
+      0%{background-position: 0% 50%}
+      50%{background-position: 100% 50%}
+      100%{background-position: 0% 50%}
+    }
 
-.btn:hover{
-background:rgba(255,255,255,.08);
-box-shadow:0 0 40px rgba(0,255,136,.25);
-transform:translateY(-3px);
-}
+    /* soft moving glow */
+    .glow{
+      position:absolute;
+      width:520px;
+      height:520px;
+      left:50%;
+      top:50%;
+      transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(0,255,136,.20), transparent 60%);
+      filter: blur(140px);
+      opacity:.9;
+      animation: glowMove 10s ease-in-out infinite alternate;
+    }
+    @keyframes glowMove{
+      0%{transform:translate(-52%,-50%) scale(1)}
+      100%{transform:translate(-48%,-52%) scale(1.06)}
+    }
 
-.btn:active{
-transform:scale(.97);
-}
+    /* Noise */
+    .noise{
+      position:absolute;
+      inset:0;
+      background:url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity:.06;
+      mix-blend-mode: overlay;
+    }
 
-</style>
+    /* MAIN BLOCK (we upgrade it, but keep your buttons intact) */
+    .container{
+      position:relative;
+      width:340px;
+      padding:50px 40px;
+      border-radius:28px;
+
+      /* 2026 glass */
+      background:rgba(20,20,20,.45);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:
+        0 1px 2px rgba(0,0,0,.35),
+        0 40px 80px rgba(0,0,0,.55),
+        0 0 120px rgba(0,255,136,.12);
+
+      /* cinematic intro */
+      opacity:0;
+      transform: translateY(46px) scale(.92);
+      animation: containerIn 900ms cubic-bezier(.16,1,.3,1) forwards;
+      will-change: transform, opacity;
+    }
+
+    /* inner highlight */
+    .container::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:28px;
+      background: radial-gradient(circle at top left, rgba(255,255,255,.10), transparent 62%);
+      pointer-events:none;
+    }
+
+    /* ultra thin inner border (premium) */
+    .container::after{
+      content:"";
+      position:absolute;
+      inset:1px;
+      border-radius:27px;
+      border:1px solid rgba(255,255,255,.05);
+      pointer-events:none;
+    }
+
+    @keyframes containerIn{
+      0%{opacity:0;transform: translateY(46px) scale(.92); filter: blur(6px)}
+      60%{opacity:1;transform: translateY(0) scale(1.01); filter: blur(0px)}
+      100%{opacity:1;transform: translateY(0) scale(1); filter: blur(0px)}
+    }
+
+    /* LOGO */
+    .logo{
+      font-size:36px;
+      font-weight:800;
+      letter-spacing:1px;
+      background:linear-gradient(90deg,#3cff9c,#ff3b5c);
+      background-size:200% 100%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-align:center;
+      animation: shimmer 4s linear infinite;
+      transform: translateZ(0);
+    }
+    @keyframes shimmer{
+      0%{background-position:0% 50%}
+      100%{background-position:200% 50%}
+    }
+
+    .subtitle{
+      text-align:center;
+      opacity:.55;
+      margin:10px 0 35px;
+      font-size:14px;
+    }
+
+    /* ✅ BUTTONS: KEEP EXACTLY YOUR STYLES (unchanged) */
+    .btn{
+      width:100%;
+      padding:16px;
+      margin-bottom:15px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+      transition:.3s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+      transition:.6s;
+    }
+
+    .btn:hover::before{left:100%}
+
+    .btn:hover{
+      background:rgba(255,255,255,.08);
+      box-shadow:0 0 40px rgba(0,255,136,.25);
+      transform:translateY(-3px);
+    }
+
+    .btn:active{transform:scale(.97)}
+
+    /* reduced motion safety */
+    @media (prefers-reduced-motion: reduce){
+      .bg::before,.glow,.logo,.container{animation:none !important}
+      .container{opacity:1;transform:none;filter:none}
+    }
+  </style>
 </head>
 
 <body>
+  <div class="bg">
+    <div class="glow"></div>
+    <div class="noise"></div>
+  </div>
 
-<div class="container">
-<div class="logo">TrdMax</div>
-<div class="subtitle">Premium Trading Platform</div>
+  <div class="container" id="card">
+    <div class="logo">TrdMax</div>
+    <div class="subtitle">Premium Trading Platform</div>
 
-<button class="btn">Начать</button>
-<button class="btn">О проекте</button>
-<button class="btn">Поддержка</button>
-</div>
+    <!-- ✅ untouched buttons -->
+    <button class="btn">Начать</button>
+    <button class="btn">О проекте</button>
+    <button class="btn">Поддержка</button>
+  </div>
 
+  <script>
+    (function () {
+      const tg = window.Telegram?.WebApp;
+
+      // If not inside Telegram, just do nothing.
+      if (!tg) return;
+
+      // 1) Telegram lifecycle
+      try {
+        tg.ready();
+        tg.expand();
+        tg.enableVerticalSwipes();
+
+        // Optional: set header/background to match the app style
+        tg.setHeaderColor('#000000');
+        tg.setBackgroundColor('#000000');
+        if (tg.setBottomBarColor) tg.setBottomBarColor('#000000');
+      } catch (e) {}
+
+      // 2) Theme sync (keep black style but still respond if you want)
+      const applyTheme = () => {
+        const p = tg.themeParams || {};
+        // keep premium dark, but you can uncomment to truly follow theme:
+        // document.documentElement.style.setProperty('--bg', p.bg_color || '#000');
+        // document.documentElement.style.setProperty('--text', p.text_color || '#fff');
+
+        document.documentElement.style.setProperty('--bg', '#000');
+        document.documentElement.style.setProperty('--text', (p.text_color || '#fff'));
+      };
+      applyTheme();
+      tg.onEvent('themeChanged', applyTheme);
+
+      // 3) Haptics on button clicks
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          try { tg.HapticFeedback?.impactOccurred('light'); } catch(e){}
+        }, { passive: true });
+      });
+
+      // 4) Performance-aware parallax (optional, subtle)
+      const card = document.getElementById('card');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Detect Telegram Android performance class from UA (LOW / AVERAGE / HIGH)
+      const ua = navigator.userAgent || '';
+      const perfMatch = ua.match(/;\s(LOW|AVERAGE|HIGH)\)/);
+      const perfClass = perfMatch ? perfMatch[1] : 'UNKNOWN';
+
+      // Only enable parallax when not reduced motion and not LOW
+      const allowParallax = !reducedMotion && perfClass !== 'LOW';
+
+      if (allowParallax && tg.DeviceOrientation?.start && tg.onEvent) {
+        try {
+          tg.DeviceOrientation.start({ refresh_rate: 60 });
+
+          let last = 0;
+          tg.onEvent('deviceOrientationChanged', function () {
+            const now = Date.now();
+            if (now - last < 16) return; // ~60fps guard
+            last = now;
+
+            // gamma: left-right, beta: front-back (values may vary by device)
+            const gamma = (this.gamma || 0);
+            const beta  = (this.beta  || 0);
+
+            // very subtle, premium
+            const ry = Math.max(-10, Math.min(10, gamma * 0.6));
+            const rx = Math.max(-10, Math.min(10, beta  * -0.3));
+
+            card.style.transform = `translateY(0) scale(1) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          });
+
+          // When app is inactive, reset transform
+          tg.onEvent('deactivated', () => {
+            card.style.transform = '';
+          });
+        } catch (e) {}
+      }
+    })();
+  </script>
 </body>
 </html>
