@@ -4,112 +4,125 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrdMax</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+
 body{
-margin:0;
 height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
-background:#000;
-overflow:hidden;
-font-family:system-ui;
+justify-content:center;
+background:
+radial-gradient(1200px 800px at 50% -10%, #0d2f1f, #000 70%),
+radial-gradient(800px 600px at 80% 120%, #1a0b14, transparent 70%);
 color:#fff;
+overflow:hidden;
 }
 
-/* ЖИВОЙ ФОН */
-body::before{
+/* ШУМ ДЛЯ ДОРОГОГО ЭФФЕКТА */
+body::after{
 content:"";
 position:absolute;
-width:200%;
-height:200%;
-background:radial-gradient(circle,#00ff8822,#000 60%);
-animation:spin 15s linear infinite;
-}
-@keyframes spin{
-100%{transform:rotate(360deg);}
+inset:0;
+background:url('https://grainy-gradients.vercel.app/noise.svg');
+opacity:.05;
+pointer-events:none;
 }
 
-/* ЛЕТАЮЩИЕ ЧАСТИЦЫ */
-.p{
-position:absolute;
-width:4px;
-height:4px;
-background:#00ff88;
-border-radius:50%;
-box-shadow:0 0 15px #00ff88;
-animation:fly 8s linear infinite;
-}
-@keyframes fly{
-0%{transform:translateY(100vh)}
-100%{transform:translateY(-10vh)}
-}
-
-/* БЛОК */
-.box{
+/* ГЛАВНЫЙ БЛОК */
+.container{
 position:relative;
-z-index:2;
-text-align:center;
-backdrop-filter:blur(25px);
-padding:40px;
-border-radius:30px;
-background:rgba(255,255,255,0.03);
-border:1px solid rgba(0,255,136,0.2);
-box-shadow:0 0 60px #00ff8840;
+width:340px;
+padding:50px 40px;
+border-radius:28px;
+background:rgba(20,20,20,.6);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,.06);
+box-shadow:
+0 40px 80px rgba(0,0,0,.6),
+0 0 120px rgba(0,255,136,.15);
+animation:fade 1s ease forwards;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
 }
 
 /* ЛОГО */
-h1{
-margin:0 0 10px;
-font-size:40px;
-background:linear-gradient(90deg,#00ff88,#ff0044);
+.logo{
+font-size:36px;
+font-weight:800;
+letter-spacing:1px;
+background:linear-gradient(90deg,#3cff9c,#ff3b5c);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
+text-align:center;
+}
+
+.subtitle{
+text-align:center;
+opacity:.5;
+margin:10px 0 35px;
+font-size:14px;
 }
 
 /* КНОПКИ */
-button{
-display:block;
-width:220px;
-margin:15px auto;
-padding:14px;
-border-radius:20px;
-border:1px solid #00ff8855;
-background:rgba(255,255,255,0.05);
+.btn{
+width:100%;
+padding:16px;
+margin-bottom:15px;
+border-radius:18px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.08);
 color:#fff;
 font-weight:600;
-backdrop-filter:blur(20px);
 cursor:pointer;
 transition:.3s;
+position:relative;
+overflow:hidden;
 }
-button:hover{
-box-shadow:0 0 25px #ff0044;
-transform:translateY(-4px);
+
+.btn::before{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+transition:.6s;
 }
+
+.btn:hover::before{
+left:100%;
+}
+
+.btn:hover{
+background:rgba(255,255,255,.08);
+box-shadow:0 0 40px rgba(0,255,136,.25);
+transform:translateY(-3px);
+}
+
+.btn:active{
+transform:scale(.97);
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h1>TrdMax</h1>
-<p style="opacity:.6">Premium System</p>
+<div class="container">
+<div class="logo">TrdMax</div>
+<div class="subtitle">Premium Trading Platform</div>
 
-<button>Начать</button>
-<button>О проекте</button>
-<button>Поддержка</button>
+<button class="btn">Начать</button>
+<button class="btn">О проекте</button>
+<button class="btn">Поддержка</button>
 </div>
-
-<script>
-for(let i=0;i<25;i++){
-let d=document.createElement("div");
-d.className="p";
-d.style.left=Math.random()*100+"vw";
-d.style.animationDuration=5+Math.random()*5+"s";
-document.body.appendChild(d);
-}
-</script>
 
 </body>
 </html>
