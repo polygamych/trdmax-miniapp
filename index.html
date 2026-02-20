@@ -5,38 +5,153 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrdMax</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #0f0f12, #000000 70%);
+    color: white;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.status {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.card {
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.05);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 0 20px rgba(0,255,136,0.08);
+}
+
+.signal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.symbol {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.badge-buy {
+    background: #00ff88;
+    color: black;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-sell {
+    background: #ff3b3b;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.info {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.85;
+}
+
+.button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    border: none;
+    color: black;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.button:active {
+    transform: scale(0.97);
+}
+
+.footer {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.5;
+    margin-top: 30px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
-
-    <div class="header">
-        <h1>TrdMax</h1>
-        <span class="status active">● Premium Active</span>
-    </div>
-
-    <div class="card">
-        <div class="pair">BTCUSDT</div>
-        <div class="side buy">BUY</div>
-
-        <div class="levels">
-            <div>Entry <span>52000</span></div>
-            <div>TP <span class="tp">52500</span></div>
-            <div>SL <span class="sl">51500</span></div>
-        </div>
-
-        <div class="confidence">
-            Confidence: <span>82%</span>
-        </div>
-    </div>
-
-    <button class="refresh">Обновить сигнал</button>
-
+<div class="header">
+    <div class="logo">TrdMax</div>
+    <div class="status">Premium Access Active</div>
 </div>
 
-<script src="app.js"></script>
+<div class="card">
+    <div class="signal-header">
+        <div class="symbol">BTCUSDT</div>
+        <div class="badge-buy">BUY</div>
+    </div>
+    <div class="info">
+        Entry: 64,250<br>
+        Stop: 63,900<br>
+        TP1: 64,900<br>
+        TP2: 65,600<br>
+        Confidence: 74%
+    </div>
+</div>
+
+<div class="card">
+    <div class="signal-header">
+        <div class="symbol">SOLUSDT</div>
+        <div class="badge-sell">SELL</div>
+    </div>
+    <div class="info">
+        Entry: 121.30<br>
+        Stop: 123.10<br>
+        TP1: 118.90<br>
+        TP2: 116.20<br>
+        Confidence: 69%
+    </div>
+</div>
+
+<button class="button">Обновить сигналы</button>
+
+<div class="footer">
+    TrdMax • Smart Trading System
+</div>
+
 </body>
 </html>
