@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>TrdMax Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>TrdMax</h1>
+    <span id="user-name"></span>
+  </div>
+
+  <div id="locked" class="locked hidden">
+    🔒 Доступ только для подписчиков
+    <button onclick="openSubscription()">Оформить подписку</button>
+  </div>
+
+  <div id="signal-card" class="card hidden">
+    <div class="pair">BTCUSDT</div>
+    <div id="side" class="side buy">BUY</div>
+
+    <div class="price-row">
+      <span>Вход</span>
+      <span id="entry">—</span>
+    </div>
+
+    <div class="price-row">
+      <span>TP</span>
+      <span id="tp">—</span>
+    </div>
+
+    <div class="price-row">
+      <span>SL</span>
+      <span id="sl">—</span>
+    </div>
+
+    <div class="confidence">
+      Надёжность: <span id="conf">—</span>
+    </div>
+  </div>
+
+  <button class="refresh" onclick="loadSignal()">🔄 Обновить</button>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
