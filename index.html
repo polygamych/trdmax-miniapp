@@ -1,176 +1,83 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrdMax</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+"use client"
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
+import { motion } from "framer-motion"
 
-body {
-    background: radial-gradient(circle at top, #111111, #000000 70%);
-    color: white;
-    padding: 18px;
-}
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
 
-/* Header */
-.header {
-    text-align: center;
-    margin-bottom: 25px;
-}
+      {/* ЖИВОЙ ГРАДИЕНТ ФОН */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-black to-red-900/20 animate-pulse blur-3xl"></div>
 
-.logo {
-    font-size: 28px;
-    font-weight: 800;
-    background: linear-gradient(90deg, #00ff88, #00ccff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+      <div className="relative z-10 p-6">
 
-.status {
-    margin-top: 8px;
-    font-size: 13px;
-    opacity: 0.6;
-}
+        {/* HEADER */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-green-400 to-red-500 bg-clip-text text-transparent">
+            TrdMax
+          </h1>
+          <p className="text-sm opacity-60 mt-2">Premium Trading Signals</p>
+        </div>
 
-/* Cards */
-.card {
-    backdrop-filter: blur(20px);
-    background: rgba(255,255,255,0.04);
-    border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 18px;
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 0 25px rgba(0,255,136,0.05);
-    animation: fadeUp 0.6s ease forwards;
-}
+        {/* SIGNAL CARDS */}
+        <div className="space-y-5">
 
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+          <SignalCard
+            symbol="BTCUSDT"
+            type="BUY"
+            entry="64,250"
+            stop="63,900"
+            tp1="64,900"
+            tp2="65,600"
+            confidence="74%"
+          />
 
-.signal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+          <SignalCard
+            symbol="SOLUSDT"
+            type="SELL"
+            entry="121.30"
+            stop="123.10"
+            tp1="118.90"
+            tp2="116.20"
+            confidence="69%"
+          />
 
-.symbol {
-    font-size: 17px;
-    font-weight: 600;
-}
+        </div>
 
-.badge {
-    padding: 4px 12px;
-    border-radius: 14px;
-    font-size: 12px;
-    font-weight: 700;
-}
+        {/* BUTTON */}
+        <button className="w-full mt-8 py-4 rounded-2xl font-bold bg-gradient-to-r from-green-400 to-red-500 hover:scale-95 transition-all shadow-lg shadow-green-500/30">
+          Обновить сигналы
+        </button>
 
-.buy {
-    background: #00ff88;
-    color: black;
-}
-
-.sell {
-    background: #ff3b3b;
-    color: white;
-}
-
-.info {
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 1.7;
-    opacity: 0.85;
-}
-
-/* Button */
-.button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 14px;
-    border-radius: 18px;
-    background: linear-gradient(90deg, #00ff88, #00ccff);
-    border: none;
-    color: black;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.button:active {
-    transform: scale(0.96);
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.4;
-    margin-top: 30px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-    <div class="logo">TrdMax</div>
-    <div class="status">Premium Signals</div>
-</div>
-
-<div id="signals">
-
-<div class="card">
-    <div class="signal-header">
-        <div class="symbol">BTCUSDT</div>
-        <div class="badge buy">BUY</div>
+      </div>
     </div>
-    <div class="info">
-        Entry: 64,250<br>
-        Stop: 63,900<br>
-        TP1: 64,900<br>
-        TP2: 65,600<br>
-        Confidence: 74%
-    </div>
-</div>
-
-<div class="card">
-    <div class="signal-header">
-        <div class="symbol">SOLUSDT</div>
-        <div class="badge sell">SELL</div>
-    </div>
-    <div class="info">
-        Entry: 121.30<br>
-        Stop: 123.10<br>
-        TP1: 118.90<br>
-        TP2: 116.20<br>
-        Confidence: 69%
-    </div>
-</div>
-
-</div>
-
-<button class="button" onclick="refreshSignals()">Обновить сигналы</button>
-
-<div class="footer">
-TrdMax • Smart Trading System
-</div>
-
-<script>
-function refreshSignals() {
-    alert("Здесь потом будет подключение к API 🔥");
+  )
 }
-</script>
 
-</body>
-</html>
+function SignalCard({ symbol, type, entry, stop, tp1, tp2, confidence }: any) {
+  return (
+    <motion.div
+      whileHover={{ y: -5 }}
+      className="bg-white/5 backdrop-blur-xl p-5 rounded-2xl border border-white/10 shadow-xl"
+    >
+      <div className="flex justify-between items-center">
+        <h2 className="font-semibold">{symbol}</h2>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+          type === "BUY"
+            ? "bg-green-400 text-black"
+            : "bg-red-500 text-white"
+        }`}>
+          {type}
+        </span>
+      </div>
+
+      <div className="mt-4 text-sm opacity-80 leading-6">
+        Entry: {entry} <br/>
+        Stop: {stop} <br/>
+        TP1: {tp1} <br/>
+        TP2: {tp2} <br/>
+        Confidence: {confidence}
+      </div>
+    </motion.div>
+  )
+}
