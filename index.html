@@ -837,42 +837,56 @@ body {
   }
 
   function drawNumbers(dt){
-    spawnTimer += dt;
+  spawnTimer += dt;
 
-    if(spawnTimer > 1800){
-      spawnNumber();
-      spawnTimer = 0;
-    }
-
-    ctx.save();
-    ctx.font="700 16px Inter";
-    ctx.globalCompositeOperation="screen";
-
-    for(let i=nums.length-1;i>=0;i--){
-      const n = nums[i];
-      n.life += dt;
-      n.y += n.vy*dt;
-
-      const alpha = Math.max(0,1-n.life/6000)*0.7;
-      ctx.globalAlpha = alpha;
-
-      if(n.isPlus){
-        ctx.fillStyle="rgba(0,255,136,1)";
-        ctx.shadowColor="rgba(0,255,136,0.8)";
-      } else {
-        ctx.fillStyle="rgba(255,60,60,1)";
-        ctx.shadowColor="rgba(255,60,60,0.8)";
-      }
-
-      ctx.shadowBlur=14;
-      ctx.fillText(n.text,n.x + mouseX*0.05,n.y + mouseY*0.05);
-      ctx.shadowBlur=0;
-
-      if(n.life>6000) nums.splice(i,1);
-    }
-
-    ctx.restore();
+  if(spawnTimer > 1800){
+    spawnNumber();
+    spawnTimer = 0;
   }
+
+  ctx.save();
+  ctx.font="700 16px Inter";
+  ctx.globalCompositeOperation="screen";
+
+  for(let i=nums.length-1;i>=0;i--){
+    const n = nums[i];
+
+    n.life += dt;
+    n.y += n.vy*dt;
+
+    // плавная кривая затухания
+    const progress = n.life / 7000;
+    const fade = 1 - progress;
+
+    ctx.globalAlpha = Math.max(0, fade * 0.8);
+
+    if(n.isPlus){
+      ctx.fillStyle="rgba(0,255,136,1)";
+      ctx.shadowColor="rgba(0,255,136,0.6)";
+    } else {
+      ctx.fillStyle="rgba(255,0,60,1)";
+      ctx.shadowColor="rgba(255,0,60,0.6)";
+    }
+
+    // мягкое растворение
+    ctx.shadowBlur = 20 * fade;
+
+    ctx.fillText(
+      n.text,
+      n.x + mouseX*0.05,
+      n.y + mouseY*0.05
+    );
+
+    ctx.shadowBlur = 0;
+
+    // удаляем только когда полностью исчез
+    if(progress >= 1){
+      nums.splice(i,1);
+    }
+  }
+
+  ctx.restore();
+}
 
   /* ===== PARTICLES ===== */
 
