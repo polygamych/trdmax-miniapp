@@ -766,26 +766,28 @@ body {
   }
 
   function drawEdgeGlow(dt){
-    hue += dt * 0.002;
 
-    const left = ctx.createLinearGradient(0,0,W*0.25,0);
-    left.addColorStop(0, `hsla(${hue},100%,50%,0.25)`);
-    left.addColorStop(1, "rgba(0,0,0,0)");
+  // дыхание
+  const breathe = 0.6 + Math.sin(performance.now() * 0.001) * 0.25;
 
-    const right = ctx.createLinearGradient(W,0,W*0.75,0);
-    right.addColorStop(0, `hsla(${hue+180},100%,50%,0.18)`);
-    right.addColorStop(1, "rgba(0,0,0,0)");
+  const left = ctx.createLinearGradient(0,0,W*0.35,0);
+  left.addColorStop(0, `rgba(0,255,136,${0.25 * breathe})`);
+  left.addColorStop(1, "rgba(0,0,0,0)");
 
-    ctx.globalCompositeOperation="screen";
+  const right = ctx.createLinearGradient(W,0,W*0.65,0);
+  right.addColorStop(0, `rgba(255,0,60,${0.18 * breathe})`);
+  right.addColorStop(1, "rgba(0,0,0,0)");
 
-    ctx.fillStyle = left;
-    ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation="screen";
 
-    ctx.fillStyle = right;
-    ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = left;
+  ctx.fillRect(0,0,W,H);
 
-    ctx.globalCompositeOperation="source-over";
-  }
+  ctx.fillStyle = right;
+  ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation="source-over";
+}
 
   function drawMarketLine(dt){
     wavePhase += dt * 0.001;
