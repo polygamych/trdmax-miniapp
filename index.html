@@ -863,30 +863,66 @@
 
     })();
 
-    /* Prevent double tap zoom */
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (event) {
-      const now = (new Date()).getTime();
-      if (now - lastTouchEnd <= 300) {
-        event.preventDefault();
-      }
-      lastTouchEnd = now;
-    }, false);
+  /* =========================================================
+   Navigation Logic
+   ========================================================= */
 
-    /* Subtle light reaction */
-    const card = document.querySelector('.container');
+const container = document.querySelector('.container');
+const originalContent = container.innerHTML;
 
-    document.addEventListener('pointermove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+function bindButtons() {
+  const buttons = document.querySelectorAll('.btn');
 
-      if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-        card.classList.add('light-active');
+  const startBtn = buttons[0];
+  const aboutBtn = buttons[1];
+  const supportBtn = buttons[2];
+
+  if (supportBtn) {
+    supportBtn.addEventListener('click', () => {
+      const tg = window.Telegram?.WebApp;
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink('https://t.me/clivx');
       } else {
-        card.classList.remove('light-active');
+        window.open('https://t.me/clivx', '_blank');
       }
     });
+  }
+
+  if (aboutBtn) {
+    aboutBtn.addEventListener('click', () => {
+      container.innerHTML = `
+        <div style="max-height:60vh; overflow-y:auto; padding-right:4px;">
+          <div style="font-size:14px; line-height:1.6; opacity:.85; margin-bottom:30px;">
+            Это не просто сигнальный бот — это полноценная система для тех,
+            кто хочет работать с рынком осознанно и на результат.<br><br>
+
+            Мы создали сильное комьюнити людей, объединённых одной целью —
+            рост, дисциплина и финансовое развитие.<br><br>
+
+            В рамках платной подписки участники получают:<br><br>
+
+            — закрытый клуб с ежедневной аналитикой<br>
+            — обучающие курсы и программу обучения<br>
+            — ежедневные материалы и обновления<br>
+            — личное сопровождение и поддержку<br><br>
+
+            Сигнальный бот — лишь один из инструментов внутри системы.
+            Главная ценность — знания, стратегия и сильное окружение.
+          </div>
+
+          <button class="btn" id="backBtn">Назад</button>
+        </div>
+      `;
+
+      document.getElementById('backBtn').addEventListener('click', () => {
+        container.innerHTML = originalContent;
+        bindButtons(); // ← ПЕРЕПРИВЯЗКА
+      });
+    });
+  }
+}
+
+bindButtons();
   </script>
 </body>
 </html>
