@@ -9,6 +9,154 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
+
+/* =========================
+   PAYWALL (Corporate)
+   ========================= */
+.paywall {
+  max-height: 62vh;
+  overflow-y: auto;
+  padding-right: 6px;
+  animation: fadeUp .28s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.pw-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pw-title {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  line-height: 1.25;
+}
+
+.pw-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: .72;
+  line-height: 1.45;
+}
+
+.pw-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 14px 0 14px;
+}
+
+.pw-badge {
+  font-size: 11px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  opacity: .92;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pw-badge.green {
+  border-color: rgba(0,255,136,.25);
+  background: rgba(0,255,136,.06);
+  box-shadow: 0 0 22px rgba(0,255,136,.10);
+}
+
+.pw-badge.red {
+  border-color: rgba(255,0,60,.22);
+  background: rgba(255,0,60,.05);
+  box-shadow: 0 0 22px rgba(255,0,60,.08);
+}
+
+.pw-card {
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 14px 14px;
+  margin: 12px 0 16px;
+}
+
+.pw-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: .9;
+}
+
+.pw-li {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.pw-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-top: 3px;
+  border: 1px solid rgba(0,255,136,.35);
+  box-shadow: 0 0 14px rgba(0,255,136,.18);
+  background: rgba(0,255,136,.08);
+  transform: rotate(45deg);
+}
+
+.pw-foot {
+  margin: 14px 0 16px;
+  font-size: 12px;
+  opacity: .65;
+  line-height: 1.45;
+}
+
+.pw-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+/* CTA button (главная) — чтобы не обрезалась и выглядела дорого */
+.btn-cta {
+  background: linear-gradient(135deg, rgba(0,255,136,.22), rgba(0,255,136,.06));
+  border: 1px solid rgba(0,255,136,.38);
+  box-shadow:
+    0 0 30px rgba(0,255,136,.28),
+    inset 0 0 14px rgba(0,255,136,.14);
+  text-align: center;
+  white-space: normal;       /* чтобы текст переносился */
+  line-height: 1.2;          /* фикс обрезания */
+  padding: 18px 16px;        /* чуть жирнее */
+}
+
+.btn-cta:hover {
+  box-shadow:
+    0 0 60px rgba(0,255,136,.42),
+    inset 0 0 22px rgba(0,255,136,.24);
+}
+
+.btn-ghost {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.10);
+  opacity: .92;
+}
+
+/* красивый скролл в paywall */
+.paywall::-webkit-scrollbar { width: 6px; }
+.paywall::-webkit-scrollbar-thumb {
+  background: rgba(0,255,136,.28);
+  border-radius: 6px;
+}
+
     /* =========================================================
        TrdMax — 2026 Premium Mini App Home (Black / Green / Red)
        - Buttons untouched
@@ -763,107 +911,195 @@
   })();
 
   /* =========================================================
-     Navigation Logic
-     ========================================================= */
-  (function Nav() {
-    const container = document.querySelector('.container');
-    const originalContent = container.innerHTML;
+   Navigation Logic (REPLACE WHOLE BLOCK)
+   ========================================================= */
+(function Nav() {
+  const container = document.querySelector('.container');
+  const originalContent = container.innerHTML;
 
-    function openAdmin() {
-      const tg = window.Telegram?.WebApp;
-      const link = 'https://t.me/clivx';
-      try { tg?.HapticFeedback?.impactOccurred?.('light'); } catch (e) {}
-
-      if (tg?.openTelegramLink) tg.openTelegramLink(link);
-      else window.open(link, '_blank');
-    }
-
-    function goHome() {
-      container.innerHTML = originalContent;
-      bindButtons();
-    }
-
-    function showPaywall() {
-      const tg = window.Telegram?.WebApp;
-      try { tg?.HapticFeedback?.impactOccurred?.('medium'); } catch (e) {}
-
-      container.innerHTML = `
-        <div style="max-height:60vh; overflow-y:auto; padding-right:4px;">
-          <div style="font-size:14px; line-height:1.6; opacity:.88; margin-bottom:18px; white-space:pre-line;">
-🔒 Доступ к сигналам закрыт.
-
-💡 Чтобы получать точные сигналы входа/выхода, видеть выгодные моменты и анализировать риски — нужна платная подписка.
-
-⚡ Что вы теряете:
-• Доступ к Закрытому клубу с живыми разборами
-• Личное сопровождение и ответы на вопросы
-• Реальные рабочие схемы от практикующих трейдеров
-
-🚀 Подписка — это доступ к среде, где результат реальный.
-Без неё вы просто смотрите со стороны, пока другие действуют.
-
-👥 Уже сотни участников зарабатывают с нашей системой каждый день.
-
-🔥 Не упускайте возможности — активируйте подписку и начните действовать!
-          </div>
-
-          <button class="btn" id="adminBtn">Написать администратору</button>
-          <button class="btn" id="backBtn">Назад</button>
-        </div>
-      `;
-
-      document.getElementById('adminBtn')?.addEventListener('click', openAdmin, { passive: true });
-      document.getElementById('backBtn')?.addEventListener('click', goHome, { passive: true });
-    }
-
-    function bindButtons() {
-      const buttons = document.querySelectorAll('.btn');
-      const startBtn = buttons[0];
-      const aboutBtn = buttons[1];
-      const supportBtn = buttons[2];
-
-      if (startBtn) {
-        startBtn.replaceWith(startBtn.cloneNode(true)); // убираем старые обработчики
+  // inject missing CSS for corporate secondary buttons (no need to edit <style>)
+  (function injectNavStyles() {
+    if (document.getElementById('nav-corp-style')) return;
+    const s = document.createElement('style');
+    s.id = 'nav-corp-style';
+    s.textContent = `
+      .btn-secondary{
+        background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+        border: 1px solid rgba(255,255,255,.14);
+        box-shadow: 0 0 20px rgba(255,255,255,.06), inset 0 0 8px rgba(255,255,255,.04);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        opacity: .96;
       }
-      const freshButtons = document.querySelectorAll('.btn');
-      const freshStart = freshButtons[0];
-      const freshAbout = freshButtons[1];
-      const freshSupport = freshButtons[2];
-
-      freshStart?.addEventListener('click', showPaywall, { passive: true });
-
-      freshSupport?.addEventListener('click', openAdmin, { passive: true });
-
-      freshAbout?.addEventListener('click', () => {
-        container.innerHTML = `
-          <div style="max-height:60vh; overflow-y:auto; padding-right:4px;">
-            <div style="font-size:14px; line-height:1.6; opacity:.85; margin-bottom:30px;">
-              Это не просто сигнальный бот — это полноценная система для тех,
-              кто хочет работать с рынком осознанно и на результат.<br><br>
-
-              Мы создали сильное комьюнити людей, объединённых одной целью —
-              рост, дисциплина и финансовое развитие.<br><br>
-
-              В рамках платной подписки участники получают:<br><br>
-
-              — закрытый клуб с ежедневной аналитикой<br>
-              — обучающие курсы и программу обучения<br>
-              — ежедневные материалы и обновления<br>
-              — личное сопровождение и поддержку<br><br>
-
-              Сигнальный бот — лишь один из инструментов внутри системы.
-              Главная ценность — знания, стратегия и сильное окружение.
-            </div>
-
-            <button class="btn" id="backBtn">Назад</button>
-          </div>
-        `;
-        document.getElementById('backBtn')?.addEventListener('click', goHome, { passive: true });
-      }, { passive: true });
-    }
-
-    bindButtons();
+      .btn-secondary:hover{
+        box-shadow: 0 0 35px rgba(0,255,136,.18), inset 0 0 14px rgba(255,255,255,.08);
+      }
+      /* чуть более строгие бейджи для "корпорации" */
+      .pw-badge{ letter-spacing:.2px; }
+    `;
+    document.head.appendChild(s);
   })();
+
+  function openAdmin() {
+    const tg = window.Telegram?.WebApp;
+    const link = 'https://t.me/clivx';
+    try { tg?.HapticFeedback?.impactOccurred?.('light'); } catch (e) {}
+
+    if (tg?.openTelegramLink) tg.openTelegramLink(link);
+    else window.open(link, '_blank');
+  }
+
+  function goHome() {
+    container.innerHTML = originalContent;
+    bindButtons();
+  }
+
+  // Corporate Paywall (your current version)
+  function showPaywall() {
+    const tg = window.Telegram?.WebApp;
+    try { tg?.HapticFeedback?.impactOccurred?.('medium'); } catch (e) {}
+
+    container.innerHTML = `
+      <div class="paywall">
+        <div class="pw-top">
+          <div>
+            <div class="pw-title">Корпоративный доступ к сигналам</div>
+            <div class="pw-sub">
+              Закрытая среда для участников: аналитика, точки входа/выхода, риск-контроль и сопровождение.
+            </div>
+          </div>
+        </div>
+
+        <div class="pw-badges">
+          <div class="pw-badge green">System Verified</div>
+          <div class="pw-badge">Risk Control</div>
+          <div class="pw-badge">24/7 Support</div>
+          <div class="pw-badge red">Limited Access</div>
+        </div>
+
+        <div class="pw-card">
+          <div style="font-size:13px; opacity:.92; line-height:1.45;">
+            <b>Что включено в подписку</b>
+          </div>
+
+          <div class="pw-list">
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Сигналы</b> с понятной логикой: вход, цели, стоп, сценарий выхода.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Ежедневная аналитика</b> и разбор ситуаций на рынке без “воды”.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Закрытый клуб</b> + сопровождение: вопросы, корректировки, дисциплина.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Материалы и обучение</b> — системно, по шагам, под результат.</div>
+            </div>
+          </div>
+
+          <div class="pw-foot">
+            Доступ активируется после подтверждения. Мы сохраняем строгую модерацию — чтобы качество среды оставалось высоким.
+          </div>
+        </div>
+
+        <div class="pw-actions">
+          <button class="btn btn-cta" id="adminBtn">Написать администратору</button>
+          <button class="btn btn-ghost" id="backBtn">Назад</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('adminBtn')?.addEventListener('click', openAdmin, { passive: true });
+    document.getElementById('backBtn')?.addEventListener('click', goHome, { passive: true });
+  }
+
+  // NEW: Corporate "About" screen with красивыми кнопками
+  function showAbout() {
+    const tg = window.Telegram?.WebApp;
+    try { tg?.HapticFeedback?.impactOccurred?.('light'); } catch (e) {}
+
+    container.innerHTML = `
+      <div class="paywall">
+        <div class="pw-top">
+          <div>
+            <div class="pw-title">О компании TrdMax</div>
+            <div class="pw-sub">
+              Премиальная аналитическая платформа с закрытой экосистемой участников и системным подходом к риск-контролю.
+            </div>
+          </div>
+        </div>
+
+        <div class="pw-badges">
+          <div class="pw-badge green">Operational</div>
+          <div class="pw-badge">Research</div>
+          <div class="pw-badge">Risk Framework</div>
+          <div class="pw-badge">Private Community</div>
+        </div>
+
+        <div class="pw-card">
+          <div style="font-size:13px; opacity:.92; line-height:1.45;">
+            <b>Принципы работы</b>
+          </div>
+
+          <div class="pw-list">
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Системность</b>: сценарии, уровни, цели и контроль риска — без “угадайки”.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Качество среды</b>: строгая модерация доступа, чтобы сохранять уровень комьюнити.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Поддержка</b>: быстрые ответы и сопровождение по вопросам внутри платформы.</div>
+            </div>
+            <div class="pw-li">
+              <div class="pw-dot"></div>
+              <div><b>Прозрачность</b>: понятная логика решений и дисциплина исполнения.</div>
+            </div>
+          </div>
+
+          <div class="pw-foot">
+            TrdMax — продуктовый подход: дизайн, стабильность, регламенты и ответственность за качество сервиса.
+          </div>
+        </div>
+
+        <div class="pw-actions">
+          <button class="btn btn-secondary" id="aboutSupportBtn">Написать в поддержку</button>
+          <button class="btn btn-ghost" id="aboutBackBtn">Назад</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('aboutSupportBtn')?.addEventListener('click', openAdmin, { passive: true });
+    document.getElementById('aboutBackBtn')?.addEventListener('click', goHome, { passive: true });
+  }
+
+  function bindButtons() {
+    const buttons = document.querySelectorAll('.btn');
+    const startBtn = buttons[0];
+    const aboutBtn = buttons[1];
+    const supportBtn = buttons[2];
+
+    if (startBtn) startBtn.replaceWith(startBtn.cloneNode(true)); // remove old handlers
+
+    const freshButtons = document.querySelectorAll('.btn');
+    const freshStart = freshButtons[0];
+    const freshAbout = freshButtons[1];
+    const freshSupport = freshButtons[2];
+
+    freshStart?.addEventListener('click', showPaywall, { passive: true });
+    freshAbout?.addEventListener('click', showAbout, { passive: true });
+    freshSupport?.addEventListener('click', openAdmin, { passive: true });
+  }
+
+  bindButtons();
+})();
 </script>
 </body>
 </html>
