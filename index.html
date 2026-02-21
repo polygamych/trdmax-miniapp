@@ -393,44 +393,124 @@
     }
 
 
-    /* =========================================================
-       ✅ BUTTONS — UNTOUCHED (exactly as your version)
-       ========================================================= */
-    .btn {
-      width: 100%;
-      padding: 16px;
-      margin-bottom: 15px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, .04);
-      border: 1px solid rgba(255, 255, 255, .08);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .3s;
-      position: relative;
-      overflow: hidden;
-    }
+/* =========================================================
+   BUTTONS — MODERN LIQUID GLASS 2026
+   ========================================================= */
 
-    .btn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
-      transition: .6s;
-    }
+.btn {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 14px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
 
-    .btn:hover::before { left: 100% }
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
 
-    .btn:hover {
-      background: rgba(255, 255, 255, .08);
-      box-shadow: 0 0 40px rgba(0, 255, 136, .25);
-      transform: translateY(-3px);
-    }
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(30px) saturate(140%);
+  -webkit-backdrop-filter: blur(30px) saturate(140%);
 
-    .btn:active { transform: scale(.97) }
+  border: 1px solid rgba(255,255,255,.06);
+
+  transition:
+    transform .35s cubic-bezier(.16,1,.3,1),
+    background .4s ease,
+    box-shadow .4s ease,
+    border-color .4s ease;
+}
+
+/* subtle breathing */
+.btn {
+  animation: btnFloat 6s ease-in-out infinite;
+}
+
+@keyframes btnFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0px); }
+}
+
+/* inner light layer */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(0,255,136,.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(255,0,60,.08),
+      transparent 70%
+    );
+
+  opacity: .6;
+  transition: opacity .4s ease;
+}
+
+/* glass highlight line */
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: glassSweep 7s linear infinite;
+  opacity: .3;
+}
+
+@keyframes glassSweep {
+  0% { left: -100%; }
+  100% { left: 150%; }
+}
+
+/* hover / tap */
+.btn:hover {
+  background: rgba(255,255,255,.06);
+  border-color: rgba(0,255,136,.25);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.5),
+    0 0 40px rgba(0,255,136,.12);
+  transform: translateY(-6px) scale(1.03);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: scale(.96);
+  box-shadow: 0 5px 20px rgba(0,0,0,.6);
+}
+
+/* primary button deeper */
+.btn:first-of-type {
+  background: linear-gradient(
+    135deg,
+    rgba(0,255,136,.08),
+    rgba(0,255,136,.03)
+  );
+  border: 1px solid rgba(0,255,136,.25);
+  box-shadow:
+    0 0 40px rgba(0,255,136,.15),
+    inset 0 0 20px rgba(0,255,136,.1);
+}
 
     /* =========================
        BUTTON HIERARCHY
@@ -469,6 +549,60 @@
       .container { opacity: 1; transform: none; filter: none }
       .grain { opacity: .02 }
     }
+
+/* =========================================================
+   CORE DEPTH UPGRADE — 2026 PREMIUM
+   ========================================================= */
+
+/* добавляем сцене перспективу */
+body {
+  perspective: 1400px;
+}
+
+/* переписываем поведение карточки */
+.container {
+  transform-style: preserve-3d;
+  animation:
+    cardIn 980ms cubic-bezier(.16,1,.3,1) forwards,
+    coreFloat 9s ease-in-out infinite 1s;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    0 60px 160px rgba(0,0,0,.5),
+    0 0 80px rgba(0,255,136,.08);
+}
+
+/* плавное парение */
+@keyframes coreFloat {
+  0% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotateX(1.5deg) rotateY(-1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+/* энергетическое свечение снизу */
+.container::before {
+  animation: energyPulse 7s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+  0% { opacity: .5; }
+  50% { opacity: 1; }
+  100% { opacity: .5; }
+}
+
+/* мягкий glow под карточкой */
+.container::after {
+  box-shadow:
+    0 50px 150px rgba(0,255,136,.15),
+    0 80px 200px rgba(0,0,0,.6);
+}
+
   </style>
 </head>
 
@@ -479,21 +613,50 @@
     <div class="grain"></div>
   </div>
 
-  <div class="container" id="card">
-    <div class="logo-wrap">
-      <div class="logo-symbol"></div>
-      <div class="logo">TrdMax</div>
-    </div>
-    <div class="subtitle">Premium Trading Platform</div>
-
-    <div class="divider"></div>
-
-    <div class="system-status">System Online</div>
-
-    <button class="btn">Начать</button>
-    <button class="btn">О проекте</button>
-    <button class="btn">Поддержка</button>
+<div class="container" id="card">
+  <div class="logo-wrap">
+    <div class="logo-symbol"></div>
+    <div class="logo">TrdMax</div>
   </div>
+
+  <div class="subtitle">Premium Trading Platform</div>
+
+  <!-- тонкая корпоративная "шапка статуса" -->
+  <div style="
+    display:flex; align-items:center; justify-content:space-between;
+    margin: 0 2px 12px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+  ">
+    <div style="display:flex; align-items:center; gap:8px; font-size:11px; opacity:.78; letter-spacing:.3px;">
+      <span style="
+        width:8px; height:8px; border-radius:50%;
+        background:#00ff88; box-shadow:0 0 10px rgba(0,255,136,.65);
+        display:inline-block;
+      "></span>
+      System Online
+    </div>
+
+    <div style="font-size:11px; opacity:.55; letter-spacing:.3px;">
+      Verified • Risk Control
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ВАЖНО: оставляем ровно 3 кнопки .btn — твой JS их так и ожидает -->
+  <button class="btn">▶ Начать</button>
+  <button class="btn">📊 О проекте</button>
+  <button class="btn">✉ Поддержка</button>
+
+  <!-- корпоративный футер (без .btn, чтобы не ломать bindButtons) -->
+  <div style="margin-top:12px; text-align:center; font-size:11px; opacity:.48; line-height:1.4;">
+    Compliance • Privacy • Terms<br>
+    <span style="opacity:.65;">© TrdMax Platform</span>
+  </div>
+</div>
 
 <script>
   /* =========================================================
@@ -514,403 +677,223 @@
     } catch (e) {}
   })();
 
-  /* =========================================================
-     FX Background Engine (Canvas)
-     ========================================================= */
-  (function FX() {
-    const canvas = document.getElementById('fx');
-    const ctx = canvas.getContext('2d', { alpha: true });
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* =========================================================
+   FX Background Engine — LIQUID EDGE TERMINAL v2
+   ========================================================= */
+(function FX() {
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d');
 
-    const Q = {
-      scale: 1,
-      fpsCap: 60,
-      particles: 70,
-      blobs: 4,
-      gridAlpha: 0.06,
-      waveAlpha: 0.14,
-      auraAlpha: 0.18,
-    };
+  let W, H, DPR;
+  let wavePhase = 0;
+  let hue = 140;
+  let mouseX = 0, mouseY = 0;
 
-    if (prefersReducedMotion) {
-      Q.fpsCap = 0;
-      Q.particles = 0;
-      Q.blobs = 0;
-      Q.gridAlpha = 0.03;
-      Q.waveAlpha = 0.10;
-      Q.auraAlpha = 0.10;
+  const nums = [];
+  const particles = [];
+  let spawnTimer = 0;
+  let ampPulse = 0;
+
+  function resize() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth;
+    H = window.innerHeight;
+
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(DPR, DPR);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  window.addEventListener("mousemove", e=>{
+    mouseX = (e.clientX - W/2) * 0.02;
+    mouseY = (e.clientY - H/2) * 0.02;
+  });
+
+  function drawBase(){
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,W,H);
+  }
+
+  function drawEdgeGlow(dt){
+    hue += dt * 0.002;
+
+    const left = ctx.createLinearGradient(0,0,W*0.25,0);
+    left.addColorStop(0, `hsla(${hue},100%,50%,0.25)`);
+    left.addColorStop(1, "rgba(0,0,0,0)");
+
+    const right = ctx.createLinearGradient(W,0,W*0.75,0);
+    right.addColorStop(0, `hsla(${hue+180},100%,50%,0.18)`);
+    right.addColorStop(1, "rgba(0,0,0,0)");
+
+    ctx.globalCompositeOperation="screen";
+
+    ctx.fillStyle = left;
+    ctx.fillRect(0,0,W,H);
+
+    ctx.fillStyle = right;
+    ctx.fillRect(0,0,W,H);
+
+    ctx.globalCompositeOperation="source-over";
+  }
+
+  function drawMarketLine(dt){
+    wavePhase += dt * 0.001;
+    ampPulse += dt * 0.0006;
+
+    const midY = H*0.55;
+    const baseAmp = H*0.05;
+    const dynamicAmp = baseAmp + Math.sin(ampPulse)*H*0.015;
+
+    ctx.save();
+    ctx.globalCompositeOperation="screen";
+    ctx.lineWidth=2.5;
+
+    // glow
+    ctx.shadowColor="rgba(0,255,136,0.8)";
+    ctx.shadowBlur=18;
+
+    ctx.strokeStyle="rgba(0,255,136,0.85)";
+    ctx.beginPath();
+
+    for(let x=0;x<=W;x+=10){
+      const y = midY + Math.sin(wavePhase + x*0.01)*dynamicAmp;
+      if(x===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
     }
 
-    const ua = navigator.userAgent || '';
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-    const isTelegram = /Telegram/i.test(ua);
+    ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.restore();
+  }
 
-    if (isIOS && isTelegram) {
-      Q.scale = 1;
-      Q.particles = prefersReducedMotion ? 0 : 55;
-      Q.blobs = prefersReducedMotion ? 0 : 3;
-    }
+  function spawnNumber(){
+    if(nums.length > 6) return;
 
-    let W = 0, H = 0, DPR = 1;
+    const isPlus = Math.random() > 0.35;
+    const sign = isPlus ? "+" : "-";
+    const value = (Math.random()*2).toFixed(2);
 
-    function resize() {
-      DPR = Math.min(2, window.devicePixelRatio || 1);
-      const scale = Q.scale;
-
-      W = Math.floor(window.innerWidth);
-      H = Math.floor(window.innerHeight);
-
-      canvas.width = Math.floor(W * DPR * scale);
-      canvas.height = Math.floor(H * DPR * scale);
-
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(DPR * scale, DPR * scale);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    function rand(min, max) { return min + Math.random() * (max - min); }
-    function now() { return performance.now(); }
-
-    const COLORS = {
-      green: 'rgba(0,255,136,',
-      red:   'rgba(255,0,60,',
-      white: 'rgba(255,255,255,',
-      black: 'rgba(0,0,0,'
-    };
-
-    const particles = [];
-    function spawnParticles() {
-      particles.length = 0;
-      for (let i = 0; i < Q.particles; i++) {
-        particles.push({
-          x: rand(0, W),
-          y: rand(0, H),
-          r: rand(0.6, 2.2),
-          vx: rand(-0.06, 0.06),
-          vy: rand(-0.04, 0.04),
-          a: rand(0.05, 0.18),
-          g: Math.random() > 0.92,
-        });
-      }
-    }
-    spawnParticles();
-
-    const blobs = [];
-    function spawnBlobs() {
-      blobs.length = 0;
-      for (let i = 0; i < Q.blobs; i++) {
-        const isRed = (i === 0);
-        blobs.push({
-          x: rand(W * 0.15, W * 0.85),
-          y: rand(H * 0.20, H * 0.80),
-          r: rand(Math.min(W, H) * 0.22, Math.min(W, H) * 0.40),
-          vx: rand(-0.10, 0.10),
-          vy: rand(-0.08, 0.08),
-          t: rand(0, 1000),
-          red: isRed
-        });
-      }
-    }
-    spawnBlobs();
-
-    let wavePhase = rand(0, 1000);
-    let spike = 0;
-    let spikeTarget = 0;
-    let spikeTimer = rand(3000, 9000);
-
-    function updateSpike(dt) {
-      spikeTimer -= dt;
-      if (spikeTimer <= 0) {
-        spikeTarget = (Math.random() > 0.55) ? rand(0.35, 0.9) : 0;
-        spikeTimer = rand(5000, 12000);
-      }
-      spike = lerp(spike, spikeTarget, 0.02);
-      if (spikeTarget > 0.01 && spike > 0.80) spikeTarget = 0;
-    }
-
-    function drawGrid() {
-      ctx.save();
-      ctx.globalAlpha = Q.gridAlpha;
-
-      const step = 44;
-      ctx.lineWidth = 1;
-
-      ctx.strokeStyle = COLORS.green + '0.12)';
-      for (let x = 0; x <= W; x += step) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, H);
-        ctx.stroke();
-      }
-
-      ctx.strokeStyle = COLORS.white + '0.06)';
-      for (let y = 0; y <= H; y += step) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(W, y);
-        ctx.stroke();
-      }
-
-      ctx.restore();
-    }
-
-    function drawBase() {
-      const g = ctx.createRadialGradient(W * 0.5, H * 0.45, 0, W * 0.5, H * 0.45, Math.max(W, H) * 0.85);
-      g.addColorStop(0, 'rgba(0,0,0,1)');
-      g.addColorStop(0.65, 'rgba(0,0,0,1)');
-      g.addColorStop(1, 'rgba(0,0,0,1)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    function drawAurora(dt) {
-      ctx.save();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = Q.auraAlpha;
-
-      for (const b of blobs) {
-        b.t += dt * 0.001;
-        b.x += b.vx * dt * 0.02;
-        b.y += b.vy * dt * 0.02;
-
-        if (b.x < -b.r * 0.2) b.x = W + b.r * 0.2;
-        if (b.x > W + b.r * 0.2) b.x = -b.r * 0.2;
-        if (b.y < -b.r * 0.2) b.y = H + b.r * 0.2;
-        if (b.y > H + b.r * 0.2) b.y = -b.r * 0.2;
-
-        const rr = b.r * (0.92 + 0.10 * Math.sin(b.t * 0.35));
-
-        const grad = ctx.createRadialGradient(b.x, b.y, rr * 0.12, b.x, b.y, rr);
-        if (b.red) {
-          grad.addColorStop(0, 'rgba(255,0,60,0.22)');
-          grad.addColorStop(0.55, 'rgba(255,0,60,0.06)');
-          grad.addColorStop(1, 'rgba(255,0,60,0.00)');
-        } else {
-          grad.addColorStop(0, 'rgba(0,255,136,0.24)');
-          grad.addColorStop(0.60, 'rgba(0,255,136,0.07)');
-          grad.addColorStop(1, 'rgba(0,255,136,0.00)');
-        }
-
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, rr, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-
-      ctx.save();
-      ctx.globalAlpha = 0.08;
-      ctx.fillStyle = 'rgba(0,0,0,1)';
-      ctx.fillRect(0, 0, W, H);
-      ctx.restore();
-    }
-
-    function drawParticles(dt) {
-      if (Q.particles <= 0) return;
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-
-      for (const p of particles) {
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
-
-        if (p.x < -10) p.x = W + 10;
-        if (p.x > W + 10) p.x = -10;
-        if (p.y < -10) p.y = H + 10;
-        if (p.y > H + 10) p.y = -10;
-
-        const tw = 0.6 + 0.4 * Math.sin((p.x + p.y) * 0.002 + wavePhase * 0.001);
-        const alpha = clamp(p.a * tw, 0.03, 0.22);
-        const color = p.g ? COLORS.green + alpha + ')' : COLORS.white + (alpha * 0.55) + ')';
-
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.restore();
-    }
-
-    function drawMarketWave(dt) {
-      wavePhase += dt * 0.001;
-      updateSpike(dt);
-
-      const midY = H * 0.55;
-      const amp = H * 0.06;
-      const step = 10;
-      const points = [];
-
-      for (let x = 0; x <= W; x += step) {
-        const t = wavePhase;
-        const n =
-          Math.sin(t * 1.2 + x * 0.014) * 0.55 +
-          Math.sin(t * 0.7 + x * 0.008) * 0.35 +
-          Math.sin(t * 2.0 + x * 0.022) * 0.18;
-
-        const spikeCenter = W * 0.68;
-        const d = Math.abs(x - spikeCenter);
-        const spikeInfluence = Math.exp(-(d * d) / (2 * (W * 0.08) * (W * 0.08))) * spike;
-
-        const y = midY + n * amp - spikeInfluence * (H * 0.12);
-        points.push({ x, y, spike: spikeInfluence });
-      }
-
-      ctx.save();
-      ctx.globalAlpha = Q.waveAlpha;
-      ctx.globalCompositeOperation = 'lighter';
-
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
-      ctx.lineTo(W, H);
-      ctx.lineTo(0, H);
-      ctx.closePath();
-
-      const fill = ctx.createLinearGradient(0, midY, 0, H);
-      fill.addColorStop(0, 'rgba(0,255,136,0.18)');
-      fill.addColorStop(0.55, 'rgba(0,255,136,0.05)');
-      fill.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = fill;
-      ctx.fill();
-      ctx.restore();
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      ctx.lineWidth = 2;
-      ctx.globalAlpha = 0.38;
-      ctx.strokeStyle = 'rgba(0,255,136,0.9)';
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
-      ctx.stroke();
-
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.20;
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-      ctx.stroke();
-      ctx.restore();
-
-      if (spike > 0.08) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'screen';
-        ctx.globalAlpha = clamp(spike * 0.30, 0, 0.22);
-        ctx.strokeStyle = 'rgba(255,0,60,0.95)';
-        ctx.lineWidth = 2;
-
-        ctx.beginPath();
-        let started = false;
-        for (const pt of points) {
-          if (pt.spike > 0.02) {
-            if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
-            else ctx.lineTo(pt.x, pt.y);
-          } else if (started) break;
-        }
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-
-    let sweepT = rand(0, 10000);
-    function drawSweep(dt) {
-      sweepT += dt;
-      const period = 14000;
-      const t = (sweepT % period) / period;
-      const active = Math.exp(-Math.pow((t - 0.55) / 0.10, 2));
-      if (active < 0.04) return;
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      ctx.globalAlpha = active * 0.10;
-
-      const x0 = -W * 0.2 + t * W * 1.4;
-      const grad = ctx.createLinearGradient(x0, 0, x0 + W * 0.4, H);
-      grad.addColorStop(0, 'rgba(0,0,0,0)');
-      grad.addColorStop(0.45, 'rgba(0,255,136,0.10)');
-      grad.addColorStop(0.55, 'rgba(255,0,60,0.06)');
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-      ctx.restore();
-    }
-
-    let lastTime = now();
-    let acc = 0;
-    let frameCount = 0;
-    let fpsLast = now();
-
-    function loop() {
-      const t = now();
-      let dt = t - lastTime;
-      lastTime = t;
-
-      if (prefersReducedMotion) {
-        drawBase();
-        drawAurora(16);
-        drawGrid();
-        drawMarketWave(16);
-        drawParticles(16);
-        return;
-      }
-
-      dt = clamp(dt, 0, 48);
-
-      const cap = Q.fpsCap;
-      if (cap > 0) {
-        const target = 1000 / cap;
-        acc += dt;
-        if (acc < target) {
-          requestAnimationFrame(loop);
-          return;
-        }
-        dt = acc;
-        acc = 0;
-      }
-
-      frameCount++;
-      if (t - fpsLast >= 1000) {
-        const fps = frameCount;
-        frameCount = 0;
-        fpsLast = t;
-
-        if (fps < 45) {
-          Q.particles = Math.max(25, Math.floor(Q.particles * 0.92));
-          if (Q.blobs > 2) Q.blobs = 2;
-          if (Q.fpsCap > 45) Q.fpsCap = 45;
-        } else if (fps > 56) {
-          Q.fpsCap = 60;
-        }
-      }
-
-      drawBase();
-      drawAurora(dt);
-      drawGrid();
-      drawMarketWave(dt);
-      drawParticles(dt);
-      drawSweep(dt);
-
-      requestAnimationFrame(loop);
-    }
-
-    loop();
-
-    window.addEventListener('resize', () => {
-      spawnParticles();
-      spawnBlobs();
+    nums.push({
+      x: Math.random()*(W-150)+50,
+      y: Math.random()*(H-150)+75,
+      text: sign + value + "%",
+      life: 0,
+      vy: -0.02 + Math.random()*0.01,
+      isPlus
     });
-  })();
+  }
 
-  /* =========================================================
+  function drawNumbers(dt){
+    spawnTimer += dt;
+
+    if(spawnTimer > 1800){
+      spawnNumber();
+      spawnTimer = 0;
+    }
+
+    ctx.save();
+    ctx.font="700 16px Inter";
+    ctx.globalCompositeOperation="screen";
+
+    for(let i=nums.length-1;i>=0;i--){
+      const n = nums[i];
+      n.life += dt;
+      n.y += n.vy*dt;
+
+      const alpha = Math.max(0,1-n.life/6000)*0.7;
+      ctx.globalAlpha = alpha;
+
+      if(n.isPlus){
+        ctx.fillStyle="rgba(0,255,136,1)";
+        ctx.shadowColor="rgba(0,255,136,0.8)";
+      } else {
+        ctx.fillStyle="rgba(255,60,60,1)";
+        ctx.shadowColor="rgba(255,60,60,0.8)";
+      }
+
+      ctx.shadowBlur=14;
+      ctx.fillText(n.text,n.x + mouseX*0.05,n.y + mouseY*0.05);
+      ctx.shadowBlur=0;
+
+      if(n.life>6000) nums.splice(i,1);
+    }
+
+    ctx.restore();
+  }
+
+  /* ===== PARTICLES ===== */
+
+  function spawnParticle(){
+    if(particles.length > 30) return;
+
+    particles.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      size: Math.random()*2 + 0.5,
+      life: 0,
+      speed: 0.02 + Math.random()*0.05
+    });
+  }
+
+  function drawParticles(dt){
+    if(Math.random() > 0.96) spawnParticle();
+
+    ctx.save();
+    ctx.globalCompositeOperation="screen";
+
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.life += dt;
+      p.y -= p.speed*dt;
+
+      const alpha = Math.max(0, 1 - p.life/6000)*0.4;
+      ctx.globalAlpha = alpha;
+
+      ctx.fillStyle="rgba(0,255,136,1)";
+      ctx.beginPath();
+      ctx.arc(p.x + mouseX*0.02, p.y + mouseY*0.02, p.size, 0, Math.PI*2);
+      ctx.fill();
+
+      if(p.life>6000) particles.splice(i,1);
+    }
+
+    ctx.restore();
+  }
+
+  function drawVignette(){
+    const g = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.2,W/2,H/2,Math.max(W,H)*0.9);
+    g.addColorStop(0,"rgba(0,0,0,0)");
+    g.addColorStop(1,"rgba(0,0,0,0.6)");
+    ctx.fillStyle=g;
+    ctx.fillRect(0,0,W,H);
+  }
+
+  let last = performance.now();
+
+  function loop(){
+    const now = performance.now();
+    const dt = now-last;
+    last = now;
+
+    drawBase();
+    drawEdgeGlow(dt);
+    drawMarketLine(dt);
+    drawParticles(dt);
+    drawNumbers(dt);
+    drawVignette();
+
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+})();  /* =========================================================
    Navigation Logic (REPLACE WHOLE BLOCK)
    ========================================================= */
 (function Nav() {
